@@ -24,7 +24,7 @@ This project helped me understand how frontend and backend interact, how authent
 - ✅ Session Management
 - ✅ Dashboard Interface
 - ✅ Add Asset Functionality
-- ✅ MySQL Database Integration
+- ✅ PostgreSQL Database Integration
 - ✅ Form Validation
 - ✅ Responsive UI Design
 - ✅ Git & GitHub Version Control
