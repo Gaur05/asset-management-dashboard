@@ -298,4 +298,4 @@ http://127.0.0.1:5001
 (Check Screenshots folder)
 
 
-⚠️ Note: This project uses Dockerized PostgreSQL. No local DB setup required if using Docker Compose.
+⚠️ Note: This project uses Dockerized PostgreSQL. No local DB setup required if using Docker Compose.# asset-management-dashboard
