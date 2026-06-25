@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Asset Management System</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+    background:#f4f7fc;
+    font-family:Arial,sans-serif;
+}
+
+.sidebar{
+    height:100vh;
+    background:#212529;
+    color:white;
+    padding:20px;
+}
+
+.sidebar h2{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.sidebar a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:10px;
+    transition:0.3s;
+}
+
+.sidebar a:hover{
+    background:#0d6efd;
+}
+
+.topbar{
+    background:white;
+    padding:15px 25px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.card-box{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.card-box:hover{
+    transform:translateY(-5px);
+}
+
+.welcome-box{
+    background:linear-gradient(to right,#0d6efd,#6610f2);
+    color:white;
+    padding:30px;
+    border-radius:15px;
+}
+
+table{
+    background:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+<div class="row">
+
+<!-- Sidebar -->
+
+<div class="col-md-2 sidebar">
+
+    <h2>AMS</h2>
+
+    <a href="/dashboard">Dashboard</a>
+    <a href="/add_asset">Add Asset</a>
+    <a href="#">Categories</a>
+    <a href="#">Reports</a>
+    <a href="#">Maintenance</a>
+    <a href="/logout">Logout</a>
+
+</div>
+
+<!-- Main Content -->
+
+<div class="col-md-10 p-4">
+
+    <!-- Topbar -->
+
+    <div class="topbar d-flex justify-content-between align-items-center">
+
+        <h3>Asset Management Dashboard</h3>
+
+        <h5>
+            Welcome, {{ session.name }}
+        </h5>
+
+    </div>
+
+    <!-- Welcome Banner -->
+
+    <div class="welcome-box mt-4">
+
+        <h2>Hello {{ session.name }} 👋</h2>
+
+        <p>
+            Manage and track company assets efficiently.
+        </p>
+
+    </div>
+
+    <!-- Dashboard Cards -->
+
+    <div class="row mt-4">
+
+        <div class="col-md-3">
+
+            <div class="card-box">
+
+                <h5>Total Assets</h5>
+
+                <h2>{{ total_assets }}</h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card-box">
+
+                <h5>Assigned Assets</h5>
+
+                <h2>{{ assigned_count }}</h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card-box">
+
+                <h5>Available Assets</h5>
+
+                <h2>{{ available_count }}</h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card-box">
+
+                <h5>Maintenance</h5>
+
+                <h2>{{ maintenance_count }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Asset Table -->
+
+    <div class="mt-5">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <h4>Asset List</h4>
+
+            <a href="/add_asset" class="btn btn-success">
+                + Add Asset
+            </a>
+
+        </div>
+
+        <table class="table table-striped table-hover table-bordered mt-3">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Asset Name</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Assigned To</th>
+                    <th>Value</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for asset in assets %}
+
+                <tr>
+
+                    <td>{{ asset[0] }}</td>
+
+                    <td>{{ asset[1] }}</td>
+
+                    <td>{{ asset[2] }}</td>
+
+                    <td>
+
+                        {% if asset[3] == 'Assigned' %}
+                            <span class="badge bg-primary">
+                                {{ asset[3] }}
+                            </span>
+
+                        {% elif asset[3] == 'Available' %}
+                            <span class="badge bg-success">
+                                {{ asset[3] }}
+                            </span>
+
+                        {% else %}
+                            <span class="badge bg-warning text-dark">
+                                {{ asset[3] }}
+                            </span>
+                        {% endif %}
+
+                    </td>
+
+                    <td>{{ asset[4] }}</td>
+
+                    <td>₹{{ asset[5] }}</td>
+
+                    <td>
+
+                        <a href="/edit_asset/{{ asset[0] }}"
+                           class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+
+                        <a href="/delete_asset/{{ asset[0] }}"
+                           class="btn btn-danger btn-sm">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
+```

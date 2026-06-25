@@ -1,0 +1,185 @@
+Activate the virtual environment
+
+========================================
+FLASK + POSTGRESQL DOCKER APPLICATION
+SETUP INSTRUCTIONS
+========================================
+
+This guide explains how to run the project from scratch on any system with Docker installed.
+
+----------------------------------------
+1. REQUIREMENTS
+----------------------------------------
+
+Install the following:
+
+- Docker Desktop
+- Docker Compose
+- Git (optional)
+
+Check installations:
+docker --version
+docker-compose --version
+
+----------------------------------------
+2. PROJECT STRUCTURE (IMPORTANT)
+----------------------------------------
+
+Your project should look like this:
+
+/project-root
+│
+├── app.py
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── log.txt (auto created)
+│
+├── templates/
+│   ├── login.html
+│   ├── signup.html
+│   ├── dashboard.html
+│   └── add_asset.html
+│
+└── instructions.txt
+
+----------------------------------------
+3. START DOCKER CONTAINERS
+----------------------------------------
+
+Open terminal in project folder:
+
+cd your-project-folder
+
+Then run:
+
+docker-compose up --build
+
+This will:
+- Build Flask image
+- Start PostgreSQL database
+- Connect both services
+
+----------------------------------------
+4. VERIFY CONTAINERS ARE RUNNING
+----------------------------------------
+
+Run:
+
+docker ps
+
+You should see:
+- flask_application
+- postgres_db
+
+----------------------------------------
+5. CREATE DATABASE TABLES (FIRST TIME ONLY)
+----------------------------------------
+
+Open PostgreSQL shell:
+
+docker exec -it postgres_db psql -U postgres -d login_db
+
+Then run:
+
+CREATE TABLE user_details (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    user_id VARCHAR(100) UNIQUE,
+    email VARCHAR(100) UNIQUE,
+    password VARCHAR(100)
+);
+
+CREATE TABLE assets (
+    id SERIAL PRIMARY KEY,
+    asset_name VARCHAR(100),
+    category VARCHAR(100),
+    status VARCHAR(50),
+    assigned_to VARCHAR(100),
+    asset_value VARCHAR(50)
+);
+
+Check tables:
+
+\dt
+
+----------------------------------------
+6. RUN APPLICATION
+----------------------------------------
+
+Open browser:
+
+http://localhost:5001
+
+(Flask runs on port 5001 in Docker setup)
+
+----------------------------------------
+7. LOGIN / SIGNUP FLOW
+----------------------------------------
+
+- Go to /signup to create account
+- Data is stored in PostgreSQL (user_details table)
+- Login using / route
+- After login → dashboard opens
+- Assets are stored in assets table
+
+----------------------------------------
+8. VIEW DATABASE DATA
+----------------------------------------
+
+Inside PostgreSQL:
+
+docker exec -it postgres_db psql -U postgres -d login_db
+
+Then:
+
+SELECT * FROM user_details;
+SELECT * FROM assets;
+
+----------------------------------------
+9. CHECK LOGS (DEBUGGING)
+----------------------------------------
+
+Flask logs:
+
+docker logs flask_application --tail 50
+
+Postgres logs:
+
+docker logs postgres_db --tail 50
+
+----------------------------------------
+10. STOP APPLICATION
+----------------------------------------
+
+docker-compose down
+
+To remove everything including data:
+
+docker-compose down -v
+
+----------------------------------------
+11. COMMON ISSUES
+----------------------------------------
+
+- "connection refused":
+  → PostgreSQL not ready or wrong host name
+
+- "TemplateNotFound":
+  → HTML files missing in /templates folder
+
+- "relation does not exist":
+  → Tables not created in database
+
+----------------------------------------
+12. IMPORTANT NOTES
+----------------------------------------
+
+- Database runs inside Docker container
+- Data is not stored in Mac files directly
+- Use pgAdmin if GUI is needed
+- Always run docker-compose up --build after changes
+
+========================================
+END OF INSTRUCTIONS
+========================================
